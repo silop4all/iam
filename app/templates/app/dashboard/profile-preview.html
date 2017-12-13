@@ -1,0 +1,221 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+{% load app_tags %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li class="active">{{title}}</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div class="iam-form">
+        <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-top-10 margin-bottom-25" >
+            <section role="region">
+
+                <div class="col-md-4 col-sm-4 col-xs-12 pull-left text-center" style="text-align: center">
+                    {% if iamp.logo %}
+                        <img src="{{ iamp.logo }}" alt="{{ iamp.name}}_{{ iamp.surname}}_logo" class="img-rounded personal-info-profile-img" style="max-width: 280px;max-height:260px" />                                  
+                        <label id="text" class="hidden"><i class="fa fa-camera fa-lg"></i></label>
+                    {% else %}
+                    <div style="">
+                        <span class="fa-stack fa-5x" >
+                            <i class="fa fa-square fa-stack-2x" style="color: #d7d5d5 "></i>
+                            <i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>
+                        </span>
+                    </div>
+                    {% endif %}
+                    
+
+                    <div class=" control-label " for="Your registration datetime">Registration at: </div>
+                    {% for date in openamp.createTimestamp %}
+                        <span><span class="fa fa-calendar"></span> {{ date|slice:"0:4"|add:'-'}}{{ date|slice:"4:6"|add:'-'}}{{ date|slice:"6:8"|add:' '}} <span class="fa fa-clock-o text-muted"></span> {{ date|slice:"8:10"|add:":" }}{{ date|slice:"10:12" }} (UTC)</span>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12 ">
+                    <div class="row">
+                        <h2><strong>My profile</strong> <span class="text-muted">| <small><a href="{% url 'profile_update' %}" class="text-muted"><span class="fa fa-edit" ></span> Edit </a> </small></span></h2>
+                        {% for date in openamp.modifyTimestamp %}
+                            <small><span class="text-muted">Last edit: {{ date|slice:"0:4"|add:'-'}}{{ date|slice:"4:6"|add:'-'}}{{ date|slice:"6:8"|add:' '}} {{ date|slice:"8:10"|add:":" }}{{ date|slice:"10:12" }} (UTC)</span></small>
+                        {%endfor%}
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" for="Your first name">Username: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp.username|safe }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your account status">Account status: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            {% for state in openamp.inetUserStatus %}
+                                {% if forloop.counter0 == 0 %}
+                                    <span> 
+                                        <span class="{{ state|account_state_icon|safe }}"></span> {{ state|title }} 
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" for="Your last name">Gender: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp.gender|user_gender }} (<span class="{{ iamp.gender|user_gender_icon|safe }}"></span>)</span>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your id">V.A.T. / I.D.:</label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ openamp.sunIdentityServerPPLegalIdentityVATIdValue.0|default:"Not available" }}</span>
+                        </div> 
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your preferred language">Preferred language: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span> {{ prefered_language|default:"Not available" }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your account status">Distinguished Name: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            {% for i in openamp.dn %}
+                            <span id="preview_dn">{{ i }}</span>
+                            {% endfor %}
+                        </div> 
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" for="Your last name">Universal Id:</label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            {% for i in openamp.universalid %}
+                            <span id="preview_universalid">{{ i }}</span>
+                            {% endfor %}
+                        </div> 
+                    </div>  
+
+
+                    <div class="row margin-top-10">
+                        <h3><strong>Contact information</strong></h3>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your  email account">Email account:</label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp.mail|default:"Not available"}}</span>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" for="Your phone number">Phone: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span> {{ iamp.phone|default:"Not available"|phone2numeric }} </span>
+                        </div>
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your country">Location: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp|user_city_country }}</span> 
+                        </div>
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your residence address">Address: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span> {{ iamp.address|default:"Not available" }}</span>
+                        </div>  
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" for="Your residence postcode">Postcode: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp.postcode|default:"Not available" }}</span>
+                        </div>
+                    </div>  
+
+
+                    <div class="row margin-top-10">
+                        <h3><strong>Skills</strong></h3>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your account status">Familiarity with IT services</label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            {% for state in openamp.inetUserStatus %}
+                                <span>{{ iamp.skills|title }} level</span>
+                            {% endfor %}
+                        </div> 
+                    </div>  
+
+
+                    <div class="row margin-top-10">
+                        <h3><strong>Crowd-funding information</strong></h3>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your account status">Participation in crowd-funding processes: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12"> 
+                            <span>{{ iamp.crowd_fund_participation|yes_or_no|safe }}</span>
+                        </div> 
+                    </div>  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                            <label class=" control-label text-info" title="Your account status">Receive notifications related to the crowd-funding processes: </label>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                            <span>{{ iamp.crowd_fund_notification|yes_or_no|safe }}</span>
+                        </div> 
+                    </div>  
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<!--script type="text/javascript">$(document).ready(function () { IAM.registerApp("{% url 'dashboard_form' %}"); });>script-->
+{% endblock %}

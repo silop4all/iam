@@ -1,0 +1,89 @@
+﻿{% extends "app/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <div class="well well-lg iam-form" style="min-height: 48%;">
+                <h2>Identity and Access Management</h2>
+                <hr>
+                {% if app %}
+                    <span>Enter your credentials to log in the <strong class=text-primary>{{ app.name }}</strong>.</span>
+                    <br/>
+                    {{ app.description }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-1 col-lg-1 "></div>
+        <div class="col-sm-5 col-md-5 col-lg-5 col-xs-12">
+            <section name="loginArea" role="region">
+                <form action="{% url 'private_api:authorize_direct_app_url' %}" class="form-horizontal iam-form" method="post" id="authForm" name="authForm" role="form">
+                    <center>
+                        <!--img src="{% static 'app/images/logo.png' %}" class="center img-responsive padding-top-20" alt="{{title}}" /-->
+                        <h2>Sign In</h2>
+                    </center>
+                    <hr>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8" id="invalid-credentials" style="font-size:small"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                                <label class="control-label" style="margin-left: 40px" for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                                <center><input type="text" class="form-control" name="username" id="username" autocomplete="off" maxlength="200" placeholder="username" /></center>
+                            </div> 
+                        </div>
+                        <!--password-->
+                        <div class="row">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12 center">
+                                <label class="control-label" style="margin-left: 40px" for="pwd">Password</label>
+                            </div>
+                            <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                                <center><input type="password" class="form-control" name="password" id="password" autocomplete="off" maxlength="200" placeholder="password" /></center>
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12"></div>
+                            <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                <center><button type="submit" class="btn btn-primary btn-block btn-lg" id="registry-submit" role="button" style="width:280px">Sign In</button></center>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12"></div>
+                            <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                <center>
+                                    <span class="text-muted center iam-info-link">
+                                        Not a member? <a href="{% url 'signup_request_form' %}" class="text-primary" >Join now</a> <span class="text-muted">|</span> <a href="{% url 'signup_form' %}" class="text-primary">Forgot password</a>
+                                    </span>
+                                </center>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.authorize("{{client_id}}", "{{redirect_uri}}"); });</script>
+{% endblock %}

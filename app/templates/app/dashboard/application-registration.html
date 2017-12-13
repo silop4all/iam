@@ -1,0 +1,137 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'applications_form' %}" class="custom-inactive-breadcrumb" title="My applications">My applications</a>
+        </li>
+        {% if application == None %}
+        <li class="active"> Register application</li>
+        {% else %}
+        <li>
+            <a href="{% url 'application_info_form' clientId=clientId %}" class="custom-inactive-breadcrumb" title="{{ application.name }}">{{ application.name }}</a>
+        </li>
+        <li class="active"> Edit</li>
+        {% endif %}
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 col-xs-12">
+            <section name="registrationArea" role="region">
+
+                {% if application %}
+                <form action="{% url 'private_api:update_application_url' clientId=clientId %}" class="form-horizontal iam-form" method="put" id="updateAppForm" name="updateAppForm" role="form">
+                {% else %}
+                <form action="{% url 'private_api:application_url' %}" class="form-horizontal iam-form" method="post" id="registrationAppForm" name="registrationAppForm" role="form">
+                {% endif %}
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                        {% if application %}<span class="text-muted"> | <small><a href="{% url 'private_api:update_application_url' clientId=clientId %}" class="text-danger" id="remove-app"><span class="fa fa-trash-o" ></span> Delete </a> </small></span>{% endif %}
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="name">Name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12 controls" title="Type the application's name">
+                                <input type="text" class="form-control" name="name" id="name" value="{{ application.name|default_if_none:"" }}" autocomplete="off" maxlength="200" placeholder="" autofocus required/>    
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="description">Description <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12 controls" title="Describe your application">
+                                <textarea class="form-control" rows="6" name="description" id="description" autocomplete="off" maxlength="200" placeholder="" required>{{ application.description|default_if_none:"" }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="url">URL <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="url" class="form-control" name="url" id="url" value="{{ application.url|default_if_none:"" }}" autocomplete="off" maxlength="100" placeholder="" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="callback_url">Callback URL <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="url" class="form-control" name="callback_url" id="callback_url" value="{{ application.callback_url|default_if_none:"" }}" autocomplete="off" maxlength="200" placeholder="" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="callback_url2">Callback URL 2</label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="url" class="form-control" name="callback_url2" id="callback_url2" value="{{ application.callback_url2|default_if_none:"" }}" autocomplete="off" maxlength="200" placeholder="" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="mail">Email <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12 controls" title="Enter the contact info">
+                                <input type="email" class="form-control" name="mail" id="mail" value="{{ mail|default_if_none:"" }}"  autocomplete="off" maxlength="200" placeholder="" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12"></div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                {% if application %}
+                                <button type="submit" class="btn btn-primary btn-md" id="update-app-submit" role="button">Submit</button>
+                                {% else %}
+                                <button type="submit" class="btn btn-primary btn-md" id="register-app-submit" role="button">Submit</button>
+                                {% endif %}
+                                <button type="reset" class="btn btn-warning btn-md" id="register-app-reset" role="button">Reset</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+{% if application %}
+<script type="text/javascript">
+    $(document).ready(function () { 
+        IAM.updateApplication("{% url 'application_info_form' clientId=clientId %}"); 
+    }).on('click', '#remove-app', function(event) {
+        event.preventDefault();
+        IAM.deleteApplication($(this).attr('href'), "{% url 'applications_form' %}"); 
+    });
+</script>
+{% else %}
+<script type="text/javascript">$(document).ready(function () { IAM.registerApplication("{% url 'applications_form' %}"); });</script>
+{% endif %}
+{% endblock %}

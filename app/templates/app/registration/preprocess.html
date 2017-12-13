@@ -1,0 +1,57 @@
+﻿{% extends "app/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <section name="loginArea" role="region">
+                <form action="{% url 'private_api:pre_registration_url' %}" class="form-horizontal iam-form" method="post" id="preRegistrationForm" name="preRegistrationForm" role="form">
+                    <center>
+                        <img src="{% static 'app/images/logo.png' %}" class="center img-responsive padding-top-20" alt="{{title}}" />
+                    </center>
+                    <hr>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                                <label class="control-label pull-left" for="mail">Email address</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2"></div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                                <input type="text" class="form-control" name="mail" id="mail" autocomplete="off" maxlength="200" placeholder="" />
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12"></div>
+                            <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                <button type="submit" class="btn btn-primary btn-md" id="registry-submit" role="button">Submit</button>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="text-center form-group">
+                            <label class="text-muted">
+                                <a href="{% url 'login_form' %}" class="text-primary" id="registry-cancel" role="button">Login</a> | 
+                                <a href="#terms" class="text-primary" >Terms of use</a> | 
+                                <a href="#policy" class="text-primary">Privacy policy</a>
+                            </label>
+                        </div>                        
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.preRegister("{% url 'login_form'%}", "{% url 'private_api:requests_url' %}"); });</script>
+{% endblock %}

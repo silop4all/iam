@@ -1,0 +1,66 @@
+{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'applications_form' %}" class="custom-inactive-breadcrumb" title="My applications">My applications</a>
+        </li>
+        <li>
+            <a href="{% url 'application_info_form' clientId=app.client_id %}" class="custom-inactive-breadcrumb" title="{{ app.name }}">{{ app.name }}</a>
+        </li>
+        <li class="active"> Members</li>
+    </ol>
+    {% endblock breadcrumb %}
+    
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section name="authMembersArea" role="region">
+                <div class="iam-form" style="padding-bottom:10%">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <h4 class="pull-left">{{ app.name}}</h4> 
+                            </div>
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
+                                <div  class="list-group">
+                                    {% if members %}
+                                        {% for member in members %}
+                                        <a class="list-group-item">
+                                            <h4 class="list-group-item-heading"><span class="fa fa-user text-muted"></span> {{member.name}} {{member.surname}}</h4>
+                                        </a>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+{% endblock %} 

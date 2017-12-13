@@ -1,0 +1,30 @@
+﻿{% extends "app/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+    <div class="row">
+        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-8 col-lg-8 col-xs-12">
+            <section name="registrationArea" role="region">
+                <form action="{% url 'private_api:users_url' %}" class="form-horizontal iam-form" method="post" id="registrationForm" name="registrationForm" role="form">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                    </h3>
+                    <hr style="color:white;background-color:white; border:none; padding-bottom:1px; height:1px">
+                    
+                    {% include 'app/registration/basic_fields.html' %}
+
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.register("{% url 'login_form' %}", "{% url 'private_api:users_url' %}"); });</script>
+{% endblock %}

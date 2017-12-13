@@ -1,0 +1,55 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li class="active"><span class="fa fa-home"></span> Home</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <section name="main" role="region">
+        <div class="row" style="margin-bottom:5%">
+            {% if applications %}
+                {% for app in applications %}
+                     <div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 margin-bottom-25">
+                        <div class="thumbnail">
+                          <center><span class="fa fa-cubes fa-5x padding-bottom-20 padding-top-20" style="color:rgba(1, 23, 22, 0.81);"></span></center>
+                          <div class="caption">
+                            <h4 class="text-center margin-bottom-10">{{ app.name}}</h4>
+                            <hr>
+                            {% if app.id in membership %}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <center><a href="{% url 'private_api:authorize_url' %}?client_id={{app.client_id}}" class="btn btn-primary abort-navigation">Browse</a></center>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <center><a href="#" class="btn btn-default abort-navigation" disabled>Browse</a></center>
+                                </div>
+                            </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+{% endblock %}

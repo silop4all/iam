@@ -1,0 +1,110 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'applications_form' %}" class="custom-inactive-breadcrumb" title="My applications">My applications</a>
+        </li>
+        <li class="active"> {{application.name}}</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div class="iam-form">
+        <div class="row col-sm-12 col-lg-12 col-md-12 col-xs-12 ">
+            <div name="previewArea" >
+                <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-10 col-lg-10 col-md-10 col-xs-12">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{application.name}}</span> 
+                        <span class="text-muted">| <small><a href="{% url 'application_edit_form' clientId=clientId %}" class="text-muted"><span class="fa fa-edit" ></span> Edit </a> </small></span>
+                        <span class="text-muted">| <small><a href="{% url 'application_role_form' clientId=clientId %}" class="text-muted"><span class="fa fa-cogs" ></span> Manage roles </a> </small></span>
+                    </h3>
+                    <hr style="color:white;background-color:white; padding-bottom:1px; height:1px">
+
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-8 col-lg-8 col-md-8 col-xs-12 clearfix" style="z-index:400">
+                            <label class=" control-label text-info" for="description">Basic URL</label><br>
+                            <span >{{application.url | safe}}</span>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-12" style="color: whitesmoke; padding: 30px; text-align: center; margin: -110px; font-size: 25">
+                            <span class="fa fa-cube fa-5x" style="background-color: white;" ></span>
+                        </div>
+                    </div>
+
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                            <label class=" control-label text-info" for="description">Description </label><br>
+                            <span>{{application.description}}</span>
+                        </div>  
+                    </div>
+
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                            <label class=" control-label text-info" for="Manadatory callback URL">Callback URL</label><br>
+                            <span>{{application.callback_url | safe}}</span>
+                        </div>
+                    </div>
+
+                
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                            <label class=" control-label text-info" for="Second callback URL">2nd Callback URL <small>(optional)</small></label><br>
+                            <span>{{application.callback_url2|default_if_none:"Not set"}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                            <label class=" control-label text-info" for="email">Email</label><br>
+                            <span>{{clientContact|default_if_none:""}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row padding-left-20 margin-bottom-25">
+                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                            <label class=" control-label text-info" for="description">OAuth2 Credentials (<small id="oauth2-credentials" class="cursor-pointer">show</small>)</label><br>
+                            <div id="target-toggle" style="display: none">
+                                <span><strong>Client type:</strong> {{clientType}}</span><br />
+                                <span><strong>Client id:</strong> {{clientId}}</span><br />
+                                <span><strong>Client secret</strong>: {{ clientSecret|default_if_none:""}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () { 
+        IAM.registerApplication("{% url 'dashboard_form' %}"); 
+        $('#oauth2-credentials').on('click',function(){
+            if ( $(this).text() === "show"){
+                $(this).text("hide");
+            }
+            else {
+                $(this).text("show");
+            }
+            $('#target-toggle').toggle('slide');
+        });
+    });</script>
+{% endblock %}

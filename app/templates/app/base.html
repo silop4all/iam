@@ -1,0 +1,85 @@
+﻿{% load analytical %}
+<!DOCTYPE html>
+<html lang="en">
+    {% analytical_head_top %}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="IAM">
+        <meta name="keywords" content="Prosperity4All, p4all, Singular Logic SA, IAM">
+        <meta name="author" content="Singular Logic SA">
+        <title>{% block title%} IAM | {{ title }}{% endblock title %}</title>
+
+         {% load staticfiles %}
+        <!--link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}app/aod/favicon/favicon.png" /-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/footer.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css"/>
+        {% block extraCss %}{% endblock extraCss %}
+        {% analytical_head_bottom %}
+    </head>
+
+    <body class="base-body">
+        {% analytical_body_top %}
+        <!--<div id="preloader">
+            <div id="status">&nbsp;</div>
+        </div>
+-->
+        <div id="wrap">
+            {% block navbar %}{% endblock navbar %}
+            {% block content %}{% endblock content %}
+        </div>
+        
+        <!-- Footer base -->
+        {% block footer %}
+        <footer id="footer">
+            <div class="container body-content">
+                <div style="margin-top:10px">
+                    <div class="row">
+                        <center>
+                            <p class="center "  style="color: #fff !important">
+                                <span><a href="http://www.prosperity4all.eu/" target="_blank" style="color: #fff !important">Prosperity4All</a> <span class="fa fa-copyright"></span> 2014 - {{ YEAR }}</span>
+                            </p>
+                        </center>
+                    </div>
+                    <div>
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-4 " >
+                            <img alt="European commission logo" width="100" src="{% static 'app/images/eu.png' %}"/>
+                        </div>
+                        <div class="col-lg-10 col-sm-10 col-md-10 col-xs-8" >
+                            <span class="pull-left" style="font-size:small">
+                            Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> 
+                            This project has received funding from the European Union’s Seventh Programme for research, technological development and demonstration under grant agreement, No 610510
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </footer>
+        {% endblock footer %}
+
+        <!-- Scripts -->
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+        <script src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script type="text/javascript">
+            //$(window).load(function() { // makes sure the whole site is loaded
+            //    $('#status').fadeOut(); // will first fade out the loading animation
+            //    $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+            //    $('body').delay(350).css({'overflow':'visible'});
+            //})
+            $(document).ready(function () {
+                $(".nav.navbar-nav li.dropdown").mouseover(function () {
+                    $(this).addClass('open');
+                }).mouseleave(function () {
+                    $(this).removeClass('open');
+                });
+            })
+        </script>
+        {% block scripts %}{% endblock scripts %}
+        {% analytical_body_bottom %}
+    </body>
+</html>

@@ -1,0 +1,140 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'list_applications_form' %}" class="custom-inactive-breadcrumb" title="Authorized applications">Authorized applications</a>
+        </li>
+        <li>
+            <a href="{% url 'authorized_application_role_form' clientId=application.client_id %}" class="custom-inactive-breadcrumb" title="{{ application.name }}">{{ application.name }}</a>
+        </li>
+        <li class="active"> Declare roles</li>
+    </ol>
+    {% endblock breadcrumb %}
+    <div>
+        <div class="class="row col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section name="memberRolesArea" role="region">
+                <div class="iam-form clearfix">
+                <!--form action="{% url 'private_api:set_member_application_roles_url' clientId=application.client_id  username=username%}" class="form-horizontal iam-form" method="put" id="memberRolesForm" name="memberRolesForm" role="form"-->
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 clearfix">
+                                <div class="margin-bottom-25 panel panel-default">
+                                  <div class="panel-body">
+                                    <h4><span class="fa fa-book"></span> Instructions</h4>
+                                  </div>
+                                  <div class="panel-footer">
+                                    <p class="text-justify">The application "{{application.name}}" supports the roles which are depicted in the list for its members. Please define what you want to do on this application by checking the relevant boxes.</p></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
+                                <form action="{% url 'private_api:set_application_member_url' clientId=application.client_id username=username %}" method="post" id="addMemberForm" name="addMemberForm">
+                                    {% if applicationMember.id %}
+                                    <h4 class="text-primary">You have already joined in the {{application.name}}. Do you want to remove from this membership?</h4>
+                                    <div class="form-group well">
+                                        <fieldset class="clearfix">
+                                            <label class="text-muted hidden" style="margin-right: 20px"><input type="radio" name="member" value="1" readonly disabled/> YES (already joined)</label>
+                                            <label class="cursor-pointer"><input type="radio" name='member' value="0" />  YES</label>
+                                        </fieldset>
+                                    </div>
+                                    {% else %}
+                                    <h4 class="text-primary">Do you want to join in the {{application.name}} membership?</h4>
+                                    <div class="form-group well">
+                                        <fieldset class="clearfix">
+                                            <label class="cursor-pointer" style="margin-right: 20px"><input type="radio" name="member" value="1"/> YES</label>
+                                            <label class="cursor-pointer"><input type="radio" name='member' value="0" />  NO</label>
+                                        </fieldset>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="clearfix">
+                                        <label style="font-weight:normal !important">I agree with the <a href="#" id="use_member_agreement">Terms of usage</a></label>: 
+                                        {% if applicationMember %}
+                                        <input type="checkbox" id="terms_member" name="terms_member" checked/>
+                                        {% else %}
+                                        <input type="checkbox" id="terms_member" name="terms_member"/>
+                                        {% endif %}
+                                    </div>
+                                    <div class="margin-bottom-10">
+                                        <button type="submit" class="btn btn-primary btn-md" id="add-member-application" form="addMemberForm" role="button" >Submit</button>
+                                        <button type="reset" class="btn btn-warning btn-md" id="clear-member-application" form="addMemberForm" role="button" >Reset</button>
+                                    </div>
+                                </form>
+
+                                <hr />
+
+                                {% if applicationMember.id %}
+                                    <form action="{% url 'private_api:set_member_application_roles_url' clientId=application.client_id  username=username%}" class="form-horizontal" method="put" id="memberRolesForm" name="memberRolesForm" role="form">
+                                        <h4 class="">List of available roles in {{application.name}}</h4>
+                                        <div  class="list-group">
+                                        {% if applicationRoles %}
+                                            {% for i in applicationRoles %}
+                                                {% if i.id in memberHasRoles %}
+                                                <a class="list-group-item cursor-pointer active">
+                                                    <h4 class="list-group-item-heading"><input type="checkbox" class="roles" checked name="{{ i.id }}" value="{{ i.id }}" form="memberRolesForm" id="app_role_{{ i.id }}"/> {{ i.role.type }}</h4>
+                                                    <p class="list-group-item-text">{{ i.role.description }}</p>
+                                                </a>
+                                                {% else %}
+                                                <a class="list-group-item cursor-pointer">
+                                                    <h4 class="list-group-item-heading"><input type="checkbox" class="roles" name="{{ i.id }}" value="{{ i.id }}" form="memberRolesForm" id="app_role_{{ i.id }}"/> {{ i.role.type }}</h4>
+                                                    <p class="list-group-item-text">{{ i.role.description }}</p>
+                                                </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="well well-lg">No available roles for the <b>{{application.name}}</b>. Please contact with the administrator of the application.</div>
+                                        {% endif %}
+                                        </div>
+                                        <div class="clearfix" style="margin: 0px">
+                                            <label style="font-weight:normal !important">I agree with the <a href="#" id="use_agreement">Terms of usage</a></label>: 
+                                            {% if memberHasRoles|length > 0 %}
+                                            <input type="checkbox" id="terms_usage" name="terms_usage" checked/>
+                                            {% else %}
+                                            <input type="checkbox" id="terms_usage" name="terms_usage"/>
+                                            {% endif %}
+                                        </div>
+                                        <input type="hidden" id="application_member" name="application_member" value="{{applicationMember.id}}"/>
+                                        <div class="margin-bottom-10">
+                                            <button type="submit" class="btn btn-primary btn-md" id="submit-member-roles" role="button">Save</button>
+                                            <button type="reset" class="btn btn-warning btn-md" id="reset-member-roles" role="button">Reset</button>
+                                        </div>
+                                    </form>
+                                {% endif %}
+
+                             </div>
+                        </div>
+                    </fieldset>
+                <!--form-->
+                </div>
+
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.setApplicationMembership("{{application.name}}"); IAM.setMemberApplicationRoles("{{application.name}}"); });</script>
+{% endblock %}

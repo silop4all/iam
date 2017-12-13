@@ -1,0 +1,90 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'applications_form' %}" class="custom-inactive-breadcrumb" title="My applications">My applications</a>
+        </li>
+        <li>
+            <a href="{% url 'application_info_form' clientId=app.client_id %}" class="custom-inactive-breadcrumb" title="{{ app.name }}">{{ app.name }}</a>
+        </li>
+        <li class="active"> Manage roles</li>
+    </ol>
+    {% endblock breadcrumb %}
+    <div>
+        <div class="class="row col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section name="setRolesArea" role="region">
+                <form action="{% url 'private_api:set_application_role_url' clientId=app.client_id %}" class="form-horizontal iam-form" method="put" id="setRolesForm" name="setRolesForm" role="form">
+                    <h3 class="padding-left-20" role="heading">
+                        {{title}} in {{ app.name}}
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 clearfix">
+                                <div class="margin-bottom-25 panel panel-default">
+                                  <div class="panel-body">
+                                    <h4><span class="fa fa-book"></span> Instructions</h4>
+                                  </div>
+                                  <div class="panel-footer">
+                                    <p class="text-justify">Please select the roles of the users that the {{app.name}} supports from the list and click on Save button. In case that this application does not support any role, ignore them.</p></div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
+                                <div class="clearfix">
+                                    <span class="pull-left">List of roles</span> 
+                                    <a href="#addrole" id="add-role" class="pull-right"><span class="fa fa-plus text-primary"></span> Add</a>
+                                </div>
+
+                                <div class="list-group">
+                                    {% if roles %}
+                                        {% for i in roles %}
+                                            {% if i.id in appRoles %}
+                                            <a class="list-group-item cursor-pointer active" style="border-color: white !important"> 
+                                                <h4 class="list-group-item-heading"><input type="checkbox" form="setRolesForm" name="{{ i.id }}" class="roles" id="role_{{ i.id }}" checked /> {{ i.type }}</h4>
+                                                <p class="list-group-item-text">{{ i.description }}</p>
+                                            </a>
+                                            {% else %}
+                                            <a class="list-group-item cursor-pointer">
+                                                <h4 class="list-group-item-heading"><input type="checkbox" class="roles" name="{{ i.id }}" form="setRolesForm" id="role_{{ i.id }}"/> {{ i.type }}</h4>
+                                                <p class="list-group-item-text">{{ i.description }}</p>
+                                            </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="margin-bottom-25">
+                                <button type="submit" class="btn btn-primary btn-md" id="set-roles-submit" role="button">Save</button>
+                                <button type="reset" class="btn btn-warning btn-md" id="set-roles-reset" role="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/bootbox/bootbox.min.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.setApplicationRoles("{% url 'private_api:add_role_url' %}") });</script>
+{% endblock %}

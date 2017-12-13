@@ -1,0 +1,50 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">      
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="{% url 'dashboard_form' %}" class="navbar-brand" title="Welcome on IAM" style="margin-top: 10px;">
+                <strong>IdentityAccessManager</strong>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                        <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"><span class="fa fa-cubes fa-fw"></span> Applications</span>
+                    </a> 
+                    <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
+                        <li role="presentation">
+                            <!--<a href="{% url 'application_form' %}" title="Register a new application" role="menuitem" tabindex="-1">Register application</a>-->
+                            <a href="{% url 'applications_form' %}" title="Manage your applications" role="menuitem" tabindex="-1">My applications</a>
+                            <a href="{% url 'list_applications_form' %}" title="List of available applications" role="menuitem" tabindex="-1">Available applications</a>
+                            <a href="{% url 'authorized_applications_form' %}" title="Track the active access in authorized applications" role="menuitem" tabindex="-1">Authorized applications</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                        <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"><span class="fa fa-user fa-fw"></span> Hi {{username}}</span>
+                    </a> 
+                    <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
+                        <li role="presentation">
+                            <a href="{% url 'profile_preview' %}" title="Manage the account" role="menuitem" tabindex="-1">My account</a>
+                            <a href="{% url 'profile_change_pwd' %}" title="Change the password" role="menuitem" tabindex="-1">Change password</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'private_api:logout_url' %}" title="Log out">
+                        <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                            <span class="fa fa-power-off fa-fw"></span>Logout
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

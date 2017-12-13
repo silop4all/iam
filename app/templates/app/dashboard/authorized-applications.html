@@ -1,0 +1,81 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+         <li class="active">{{title}}</li>
+    </ol>
+    {% endblock breadcrumb %}
+    <div>
+        <div class="class="row col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section name="setRolesArea" role="region">
+                <form action="#" class="form-horizontal iam-form" method="put" id="setRolesForm" name="setRolesForm" role="form">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}} </span>
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 clearfix">
+                                <div class="margin-bottom-25 panel panel-default">
+                                    <div class="panel-body">
+                                        <h4><span class="fa fa-book"></span> Instructions</h4>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <p class="text-justify">Browse on the list of the available applications. To be member of an application, please click on the Membership button.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
+                                <h4>List of available applications</h4>
+                                <div  class="list-group">
+                                {% for app in apps %}
+                                    <a class="list-group-item padding-bottom-20 padding-top-20"> 
+                                        <h4 class="list-group-item-heading">{{ app.name }} 
+                                            <small class="pull-right">
+                                                {% if app.id in appOwnerList %}<label class="label label-success label-sm">owner</label>{% endif %}
+                                                {% if app.id in appMemberList %}<label class="label label-info label-sm">member</label>{% endif %}
+                                            </small> 
+                                        </h4>
+                                        <p class="list-group-item-text">
+                                            <button type="button" data-href="{% url 'authorized_application_role_form' clientId=app.client_id %}" class="btn btn-primary btn-sm set-member-roles" role="button"><span class="fa fa-caret-square-o-right"></span> Membership</button>
+                                        </p>
+                                    </a>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    }).on('click', ".set-member-roles", function (event) {
+        event.preventDefault();
+        location.href = $(this).data('href');
+    })
+
+</script>
+{% endblock %}

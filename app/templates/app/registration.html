@@ -1,0 +1,297 @@
+﻿{% extends "app/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content" id="main">
+    <div class="row">
+        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-8 col-lg-8 col-xs-12">
+            <section name="registrationArea" role="region">
+                <form action="{% url 'private_api:users_url' %}" class="form-horizontal iam-form" method="post" id="registrationForm" name="registrationForm" role="form">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                    </h3>
+                    <hr style="color:white;background-color:white; border:none; padding-bottom:1px; height:1px">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="name">First name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12 controls" title="Insert your name">
+                                <input type="text" class="form-control" name="name" id="name" autocomplete="off" maxlength="200" placeholder="" autofocus required/>    
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="surname">Last name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="surname" id="surname" autocomplete="off" maxlength="200" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="username">Username <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="username" id="username" autocomplete="off" maxlength="200" placeholder="the username on platform " required/>
+                            </div> 
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="mail">Email address <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="email" class="form-control" name="mail" id="mail" autocomplete="off" value="{{ mail }}" maxlength="200" placeholder="a valid email account" readonly required/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="userpassword">Password <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                                <input type="password" class="form-control" name="userpassword" id="userpassword" autocomplete="off" maxlength="100" placeholder="a private password" required/>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 checkbox" >
+                                <label for="view-password" class="text-muted" style="font-weight: normal !important;"><input type="checkbox" id="view-password" style="float:none;margin-left:0"/> view password</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="password_confirm">Confirm password <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="password" class="form-control" name="password_confirm" id="password_confirm" autocomplete="off" maxlength="100" placeholder="confirm the password" required/>
+                            </div>
+                        </div> 
+                        
+
+                        <!--optional-->
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="skills">IT skills <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control" name="skills" id="skills">
+                                    <option value="low" selected="selected">Low</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="phone">Phone number <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="tel" class="form-control form-control-static" name="phone" id="phone" autocomplete="off" maxlength="15" placeholder="" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="gender">Gender <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control" name="gender" id="gender">
+                                    <option value="M">Male</option>
+                                    <option value="W">Female</option>
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="skills">Skills</label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                                <select class="form-control" name="skills" id="skills">
+                                    <option value="-1" selected="selected" disabled="disabled"> -- Select skill -- </option>
+                                    <option value="1">Office applications</option>
+                                    <option value="2">Internet use</option>
+                                    <option value="3">Tablet use</option>
+                                    <option value="4">Smartphone use</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                                <button class="btn btn-md"><span class="fa fa-plus"></span> Add skill</button>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="interests">Interests</label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                                <select class="form-control" name="interests" id="interests">
+                                    <option value="-1" selected="selected" disabled="disabled"> -- Select interest -- </option>
+                                    <option value="1">Daily life</option>
+                                    <option value="2">Health/fitness</option>
+                                    <option value="3">Entertainment</option>
+                                    <option value="4">Digital services</option>
+                                    <option value="5">Technical support</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                                <button class="btn btn-md"><span class="fa fa-plus"></span> Add interest</button>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="vat">V.A.T. (I.D.)</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control form-control-static" name="vat" id="vat" autocomplete="off" maxlength="15" placeholder="" />
+                            </div>
+                        </div> 
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="country">Country <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control"  name="country" id="country" role="list">
+                                    <option value=""> --- </option>
+                                    {% if CountriesList %}
+                                        {% for country in CountriesList %}
+                                            {% if country  %}
+                                                <option value="{{ country.name }}">{{ country.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="city">City</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="city" id="city" autocomplete="off" maxlength="255" placeholder="i.e. Athens" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="address">Address</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="address" id="address" autocomplete="off" maxlength="255" placeholder="ie Alexandras street, 23" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Postcode</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="postcode" id="postcode" autocomplete="off" maxlength="20" placeholder="" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group ">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Crowd-funding participation <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <fieldset class="clearfix">
+                                    <label class="cursor-pointer" style="margin-right: 20px"><input type="radio" name="crowd_fund_participation" value="1" /> YES</label>
+                                    <label class="cursor-pointer"><input type="radio" name='crowd_fund_participation' value="0" />  NO</label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-sm-offset-4 col-md-offset-4 col-lg-offset-4 col-md-7 col-sm-7 col-lg-7" id="crowd_fund_participation_msg"></div>
+                        </div> 
+
+                        <div class="form-group ">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Crowd-funding notifications <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <fieldset class="clearfix">
+                                    <label class="cursor-pointer" style="margin-right: 20px"><input type="radio" name="crowd_fund_notification" value="1" /> YES</label>
+                                    <label class="cursor-pointer"><input type="radio" name='crowd_fund_notification' value="0" />  NO</label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-sm-offset-4 col-md-offset-4 col-lg-offset-4 col-md-7 col-sm-7 col-lg-7" id="crowd_fund_notification_msg"></div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="language">Preferred Language <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control"  name="language" id="language" role="list">
+                                    <option value=""> --- </option>
+                                    {% if LanguagesList %}
+                                        {% for lang in LanguagesList %}
+                                            {% if lang  %}
+                                                <option value="{{ lang.iso639_3_code }}">{{ lang.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" role="note" for="question">Sum of <span id="literal">{{ literal }} = </span>? <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                                <input type="text" name="question" id="question" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4  col-xs-12"></div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12" style="font-size:medium;text-align:justify!important">
+                                <strong style="color: red">*</strong> <span> Required fields</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12"></div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <button type="submit" class="btn btn-primary btn-md" id="registry-submit" role="button">Submit</button>
+                                <button type="reset" class="btn btn-warning btn-md" id="registry-reset" role="button">Reset</button>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4 col-sm-4 col-md-4 col-lg-4 col-xs-12"></div> 
+                            <div class="col-sm-4 col-md-4 col-xs-12">
+                                <label class="text-muted" style="color:gray;font-size:small">
+                                    <a href="{% url 'login_form' %}" class="text-primary" id="registry-cancel" role="button">Login</a> | 
+                                    <a href="#terms" class="text-primary" >Terms of use</a> | 
+                                    <a href="#policy" class="text-primary">Privacy policy</a>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.register("{% url 'login_form' %}", "{% url 'private_api:users_url' %}"); });</script>
+{% endblock %}

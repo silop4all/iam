@@ -1,0 +1,98 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'profile_preview' %}" class="custom-inactive-breadcrumb" title="My profile">My account</a>
+        </li>
+        <li class="active">Change password</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div>
+        <div class="class="row col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section name="changePwdArea" role="region">
+                <form action="{% url 'private_api:change_password_url' username %}" class="form-horizontal iam-form padding-bottom-20" method="put" id="changePwdForm" name="changePwdForm" role="form">
+                    <h3 class="" role="heading">
+                        <span class="padding-left-20">{{title}}</span>
+                    </h3>
+                    <hr>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="currentpassword">Old Password <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                                <input type="password" class="form-control" name="currentpassword" id="currentpassword" autocomplete="off" maxlength="100" placeholder="a private password" required/>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 checkbox" >
+                                <label for="view-old-password" class="text-muted" style="font-weight: normal !important;"><input type="checkbox" id="view-old-password" style="float:none;margin-left:0"/> view password</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="userpassword">New Password <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                                <input type="password" class="form-control" name="userpassword" id="userpassword" autocomplete="off" maxlength="100" placeholder="a private password" required/>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 checkbox" >
+                                <label for="view-password" class="text-muted" style="font-weight: normal !important;"><input type="checkbox" id="view-password" style="float:none;margin-left:0"/> view password</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                <label class="padding-left-20 control-label" for="password_confirm">Confirm new password <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="password" class="form-control" name="password_confirm" id="password_confirm" autocomplete="off" maxlength="100" placeholder="confirm the new password" required/>
+                            </div>
+                        </div> 
+
+
+                        <!-- Info -->
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4  col-xs-12"></div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12" style="font-size:medium;text-align:justify!important">
+                                <strong style="color: red">*</strong> <span> Required fields</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12"></div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <button type="submit" class="btn btn-primary btn-md" id="update-profile" role="button">Submit</button>
+                                <button type="reset" class="btn btn-warning btn-md" id="form-reset" role="button">Reset</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.changePassword("{% url 'private_api:logout_url' %}"); });</script>
+{% endblock %}

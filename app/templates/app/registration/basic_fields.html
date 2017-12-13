@@ -1,0 +1,79 @@
+{% load staticfiles %}
+
+    <fieldset>
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                <label class="padding-left-20 control-label" for="username">Username <span style="color:red">*</span></label>
+            </div>
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                <input type="text" class="form-control" name="username" id="username" autocomplete="off" maxlength="200" placeholder="the username on platform " required/>
+            </div> 
+        </div>
+            
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                <label class="padding-left-20 control-label" for="mail">Email address <span style="color:red">*</span></label>
+            </div>
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                <input type="email" class="form-control" name="mail" id="mail" autocomplete="off" value="{{ mail }}" maxlength="200" placeholder="a valid email account" readonly required/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                <label class="padding-left-20 control-label" for="userpassword">Password <span style="color:red">*</span></label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                <input type="password" class="form-control" name="userpassword" id="userpassword" autocomplete="off" maxlength="100" placeholder="a private password" required/>
+            </div>
+            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 checkbox" >
+                <label for="view-password" class="text-muted" style="font-weight: normal !important;"><input type="checkbox" id="view-password" style="float:none;margin-left:0"/> view password</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                <label class="padding-left-20 control-label" for="password_confirm">Confirm password <span style="color:red">*</span></label>
+            </div> 
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                <input type="password" class="form-control" name="password_confirm" id="password_confirm" autocomplete="off" maxlength="100" placeholder="confirm the password" required/>
+            </div>
+        </div> 
+
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                <label class="padding-left-20 control-label" role="note" for="question">Sum of <span id="literal">{{ literal }} = </span>? <span style="color:red">*</span></label>
+            </div>
+            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                <input type="text" name="question" id="question" class="form-control" required />
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="form-group">
+            <div class="col-sm-4 col-md-4 col-lg-4  col-xs-12"></div> 
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12" style="font-size:medium;text-align:justify!important">
+                <strong style="color: red">*</strong> <span> Required fields</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12"></div>
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                <button type="submit" class="btn btn-primary btn-md" id="registry-submit" role="button">Submit</button>
+                <button type="reset" class="btn btn-warning btn-md" id="registry-reset" role="button">Reset</button>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-sm-4 col-sm-4 col-md-4 col-lg-4 col-xs-12"></div> 
+            <div class="col-sm-4 col-md-4 col-xs-12">
+                <label class="text-muted" style="color:gray;font-size:small">
+                    <a href="{% url 'login_form' %}" class="text-primary" id="registry-cancel" role="button">Login</a> | 
+                    <a href="#terms" class="text-primary" >Terms of use</a> | 
+                    <a href="#policy" class="text-primary">Privacy policy</a>
+                </label>
+            </div>
+        </div>
+    </fieldset>

@@ -1,0 +1,264 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container body-content " id="main">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'profile_preview' %}" class="custom-inactive-breadcrumb" title="My profile">My account</a>
+        </li>
+        <li class="active">Edit you account</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div class="iam-form" >
+        <section name="profileEditArea" role="region" class="row col-sm-12 col-md-12 col-lg-12 col-xs-12 padding-bottom-20">
+            <h3 class="" role="heading">
+                <span class="padding-left-20">{{title}}</span>
+            </h3>
+            <hr>
+                
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 text-center ">
+                <form action="{% url 'private_api:user_logo' username %}"  method="post" id="logoUpdateForm" name="logoUpdateForm" role="form">
+                    <input type="file" id="logo" name="logo" data-link="{% url 'private_api:user_logo' username %}" accept="image/png" size="1" style="display:none"/>
+                    <a href="#" class="img-responsive btn text-center" title="Update logo" id="edit_user_logo" style="position:relative;" >
+                        {% if iamp.logo %}
+                            <img src="{{ iamp.logo }}" alt="{{ iamp.name}}_{{ iamp.surname}}_logo" class="img-rounded personal-info-profile-img center" style="max-width: 280px;max-height:260px" />                                  
+                            <label id="text" class="hidden"></label>
+                        {% else %}
+                        <div style="">
+                            <span class="fa-stack fa-5x" >
+                                <i class="fa fa-square fa-stack-2x" style="color: #d7d5d5 "></i>
+                                <i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>
+                            </span>
+                        </div>
+                        {% endif %}
+                        <br>
+                        <i class="fa fa-camera fa-lg"></i> Update your logo<br/>(PNG format is allowed)
+                    </a>
+                </form>
+            </div>
+                
+            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                <form action="{% url 'private_api:user_url' username %}" class="form-horizontal" method="put" id="profileEditForm" name="profileEditForm" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="name">First name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12 controls" title="Insert your name">
+                                <input type="text" class="form-control" name="name" id="name" value="{% if iamp.name %}{{ iamp.name }}{% endif %}" autocomplete="off" maxlength="200" placeholder="" autofocus required/>    
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="surname">Last name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="surname" id="surname" value="{% if iamp.surname %}{{ iamp.surname }}{% endif %}" autocomplete="off" maxlength="200" placeholder="" required/>
+                            </div>
+                        </div>
+                        
+                            
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="mail">Email address <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="email" class="form-control" name="mail" id="mail" autocomplete="off" value="{{ iamp.mail }}" maxlength="200" placeholder="a valid email account" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="skills">IT skills <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control" name="skills" id="skills">
+                                    {% if iamp.skills == 'low'%}<option value="low" selected="selected">Low</option>{% else %}<option value="low">Low</option>{%endif%}
+                                    {% if iamp.skills == 'normal'%}<option value="normal" selected="selected">Normal</option>{% else %}<option value="normal">Normal</option>{%endif%}
+                                    {% if iamp.skills == 'high'%}<option value="high" selected="selected">High</option>{% else %}<option value="high">High</option>{%endif%}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="phone">Phone number <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="tel" class="form-control form-control-static" name="phone" id="phone" value="{{ iamp.phone }}" autocomplete="off" maxlength="15" placeholder="" required/>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="gender">Gender <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control" name="gender" id="gender">
+                                    {% if iamp.gender == 'U'%}<option value="U" selected="selected" disabled>-- Define you gender --</option>{%endif%}
+                                    {% if iamp.gender == 'M'%}<option value="M" selected="selected">Male</option>{% else %}<option value="M">Male</option>{%endif%}
+                                    {% if iamp.gender == 'W'%}<option value="W" selected="selected">Female</option>{% else %}<option value="W">Female</option>{%endif%}
+                                </select>
+                            </div>
+                        </div> 
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="vat">V.A.T. (I.D.)</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                {% with openamp.sunIdentityServerPPLegalIdentityVATIdValue|first as vat %}
+                                <input type="text" class="form-control form-control-static" name="vat" id="vat" value="{% if vat %}{{ vat }}{%endif%}" autocomplete="off" maxlength="15" placeholder="" />
+                                {%endwith%}
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="language">Preferred language <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control"  name="language" id="language" role="list">
+                                    <option value=""> --- </option>
+                                    {% if LanguagesList %}
+                                        {% for lang in LanguagesList %}
+                                            {% with openamp.sunIdentityServerPPDemographicsDisplayLanguage|first as selLang %}
+                                                {% if selLang %}
+                                                    {% if lang.iso639_3_code == selLang %}
+                                                    <option value="{{ lang.iso639_3_code }}" selected="selected">{{ lang.name }}</option>
+                                                    {% else %}
+                                                    <option value="{{ lang.iso639_3_code }}">{{ lang.name }}</option>
+                                                    {% endif %}
+                                                {% else %}
+                                                <option value="{{ lang.iso639_3_code }}">{{ lang.name }}</option>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="country">Country <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <select class="form-control"  name="country" id="country" role="list">
+                                    <option value=""> --- </option>
+                                    {% if CountriesList %}
+                                        {% for country in CountriesList %}
+                                            {% if country  %}
+                                                {% if country == iamp.country %}
+                                                <option value="{{ country }}" selected="selected">{{ country }}</option>
+                                                {% else %}
+                                                <option value="{{ country }}">{{ country }}</option>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="city">City</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="city" id="city" value="{{ iamp.city|default_if_none:"" }}" autocomplete="off" maxlength="255" placeholder="i.e. Athens" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="address">Address</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="address" id="address" value="{{ iamp.address|default_if_none:"" }}" autocomplete="off" maxlength="255" placeholder="ie Alexandras street, 23" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Postcode</label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <input type="text" class="form-control" name="postcode" id="postcode" value="{{ iamp.postcode|default_if_none:"" }}" autocomplete="off" maxlength="20" placeholder="" />
+                            </div>
+                        </div> 
+
+                        <div class="form-group ">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Crowd-funding participation <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <fieldset class="clearfix">
+                                    <label class="cursor-pointer" style="margin-right: 20px"><input type="radio" name="crowd_fund_participation" value="1" {% if iamp.crowd_fund_participation %} checked {% endif %}/> YES</label>
+                                    <label class="cursor-pointer"><input type="radio" name='crowd_fund_participation' value="0" {% if not iamp.crowd_fund_participation %} checked {% endif %}/>  NO</label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="col-sm-offset-4 col-md-offset-4 col-lg-offset-4 col-md-7 col-sm-7 col-lg-7" id="crowd_fund_participation_msg"></div>
+                        </div> 
+
+                        <div class="form-group ">
+                            <div class="col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1 col-xs-12">
+                                <label class="padding-left-20 control-label" for="postcode">Crowd-funding notifications <span style="color:red">*</span></label>
+                            </div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <fieldset class="clearfix">
+                                    <label class="cursor-pointer" style="margin-right: 20px"><input type="radio" name="crowd_fund_notification" value="1" {% if iamp.crowd_fund_notification %} checked {% endif %}/> YES</label>
+                                    <label class="cursor-pointer"><input type="radio" name='crowd_fund_notification' value="0" {% if not iamp.crowd_fund_notification %} checked {% endif %} />  NO</label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="col-sm-offset-4 col-md-offset-4 col-lg-offset-4 col-md-7 col-sm-7 col-lg-7" id="crowd_fund_notification_msg"></div>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="form-group">
+                            <div class="col-sm-5 col-md-5 col-lg-5  col-xs-12"></div> 
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12" style="font-size:medium;text-align:justify!important">
+                                <strong style="color: red">*</strong> <span> Required fields</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-5 col-md-5 col-lg-5 col-xs-12"></div>
+                            <div class="col-md-7 col-sm-7 col-lg-7 col-xs-12">
+                                <button type="submit" class="btn btn-primary btn-md" id="update-profile" role="button">Submit</button>
+                                <button type="reset" class="btn btn-warning btn-md" id="form-reset" role="button">Reset</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.updateProfile("{% url 'profile_preview' %}", "{% url 'private_api:users_url' %}"); });</script>
+{% endblock %}

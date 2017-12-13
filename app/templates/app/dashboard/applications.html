@@ -1,0 +1,74 @@
+﻿{% extends "app/base.html" %}
+
+{% block navbar %}
+    {% include "app/dashboard/top-menu.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+{% endblock extraCss %}
+
+{% block content %}
+<div class="container body-content" id="main">
+    {% block breadcrumb %}
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard_form' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> Home
+            </a>
+        </li>
+        <li class="active"> My applications</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+    <div class="iam-form">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" >
+            <section role="region" >
+                <h3 role="heading">
+                    <span class="padding-left-20">{{title}}</span>
+                </h3>
+                <hr>
+                <div class="margin-bottom-25">
+                    <div id="custom-toolbar" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
+                        <a id="new-service" href="{% url 'application_form' %}" class="btn btn-default" title="Add a new service" data-href="#">
+                            <span class="fa fa-plus-circle text-primary"></span> Register an application
+                        </a>
+                    </div>
+                    <table id="my_apps"
+                            data-classes="table table-hover"
+                            data-search="true"  
+                            data-show-toggle="false"
+                            data-show-columns="true"
+                            data-card-view="false"
+                            data-click-to-select="false"
+                            data-toolbar="#custom-toolbar"
+                            data-pagination="true"
+                            data-page-list="[10, 20, 30, 50]"
+                            data-sort-name="name" data-sort-order="asc">
+                        <thead>
+                        <tr class="active">
+                            <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false" data-align="center">ID</th>
+                            <th data-field="name" data-sortable="true" data-switchable="false" data-align="center">Name</th>
+                            <th data-field="description" data-sortable="false" data-visible="false" data-align="center">Description</th>
+                            <th data-field="client_id" data-sortable="true" data-visible="false" data-align="center">Client ID</th>
+                            <th data-field="edit" data-sortable="false" data-align="center" >Edit</th>
+                            <th data-field="roles" data-sortable="false" data-align="center" >Roles</th>
+                            <th data-field="users" data-sortable="false" data-align="center" >Members</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/iam.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/scripts/cookies.js' %}"></script>
+<script type="text/javascript">$(document).ready(function () { IAM.myApplications("{% url 'private_api:my_applications_url' username=username %}", "{% url 'applications_form' %}"); });</script>
+{% endblock %}
